@@ -20,12 +20,12 @@ const Examinee = () => {
   }, []);
 
   const handlefetch = async () => {
-    const res = await axios.get(`${BASE_URL}/api/examinee`);
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/examinee`);
     setData(res.data.data);
   };
 
   const handleDelete = async (id) => {
-    const res = await axios.delete(`${BASE_URL}/api/examinee/${id}`);
+    const res = await axios.delete(`${import.meta.env.VITE_API_URL}/api/examinee/${id}`);
     if (res) {
       alert("Deleted Successfully");
     } else {
@@ -57,7 +57,7 @@ const Examinee = () => {
     e.preventDefault();
     if (!editingId) return;
     try {
-      await axios.put(`${BASE_URL}/api/examinee/${editingId}`, form);
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/examinee/${editingId}`, form);
       alert('Examinee Updated Successfully');
       setForm({
         name: '',
