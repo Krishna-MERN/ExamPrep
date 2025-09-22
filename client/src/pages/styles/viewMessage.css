@@ -1,0 +1,48 @@
+.messages-container {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+}
+
+.messages-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.loading,
+.empty {
+  text-align: center;
+  color: #555;
+  font-style: italic;
+}
+
+.messages-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.messages-table th,
+.messages-table td {
+  border: 1px solid #ddd;
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.messages-table th {
+  background: #007bff;
+  color: white;
+}
+
+.messages-table tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+.messages-table tr:hover {
+  background: #f1f7ff;
+}
