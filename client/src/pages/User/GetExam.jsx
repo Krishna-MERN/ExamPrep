@@ -19,7 +19,7 @@ const GetExam = () => {
   useEffect(() => {
     const fetchExam = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/api/exams/exam/${examId}`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/exams/exam/${examId}`);
         const { exam: examData, questions: questionData } = res.data;
         setExam(examData);
         setQuestions(questionData);
@@ -62,7 +62,7 @@ const GetExam = () => {
   const handleSubmit = async () => {
     if (submitted) return;
     try {
-      const res = await axios.post(`${BASE_URL}/api/exams/submit-exam`, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/exams/submit-exam`, {
         examId,
         answers,
         email,

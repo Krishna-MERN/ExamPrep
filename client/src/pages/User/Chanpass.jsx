@@ -18,7 +18,7 @@ const Chanpass = () => {
     const handleSubmit = async(e)=>{
         e.preventDefault();
         try{
-            const res =await axios.put(`${BASE_URL}/api/examinee/change/${userId}`,data);
+            const res =await axios.put(`${import.meta.env.VITE_API_URL}/api/examinee/change/${userId}`,data);
             if(res){
                 alert("Password Changed")
             }

@@ -18,7 +18,7 @@ const Password = () => {
     const handleSubmit = async(e)=>{
         e.preventDefault();
         try{
-            const res =await axios.put(`${BASE_URL}/api/admin/change/${email}`,data);
+            const res =await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/change/${email}`,data);
             if(res){
                 alert(res.data.message);
                 if(res.data.message==="password changed successfully"){

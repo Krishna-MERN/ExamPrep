@@ -32,13 +32,13 @@ const Profile = () => {
   useEffect(() => {
     const fetchExaminee = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/api/examinee/${examineeId}`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/examinee/${examineeId}`);
         console.log(res.data.data);
         
         if (res.data) {
           setFormData(res.data.data);
           if (res.data.profileImage) {
-            setProfilePic(`${BASE_URL}/uploads/${res.data.profileImage}`);
+            setProfilePic(`${import.meta.env.VITE_API_URL}/uploads/${res.data.profileImage}`);
           }
         }
       } catch (err) {
@@ -75,7 +75,7 @@ const Profile = () => {
 
     try {
       const res = await axios.put(
-        `${BASE_URL}/api/examinee/${examineeId}`,
+        `${import.meta.env.VITE_API_URL}/api/examinee/${examineeId}`,
         data,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

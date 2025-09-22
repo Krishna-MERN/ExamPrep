@@ -6,7 +6,7 @@ const Report = () => {
 
   const handlefetch = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/api/exams/report`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/exams/report`);
       setData(res.data);
     } catch (er) {
       alert("Sorry, fetching reports failed");

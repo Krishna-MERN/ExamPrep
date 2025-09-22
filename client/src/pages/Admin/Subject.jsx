@@ -33,14 +33,14 @@ const Subject = () => {
     e.preventDefault();
     try {
       if(editform){
-        const res = await axios.put(`${BASE_URL}/api/subject/${id.id}`,form);
+        const res = await axios.put(`${import.meta.env.VITE_API_URL}/api/subject/${id.id}`,form);
         if(res){
           alert('Subject Updated Successfully')
            handlefetch();
         }
       }
       else{
-        const res = await axios.post(`${BASE_URL}/api/subject`, form)
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/subject`, form)
         if (res) {
           alert('Subject Added Successfully')
           handlefetch();
@@ -53,7 +53,7 @@ const Subject = () => {
   }
   // fetch data api
   const handlefetch = async () => {
-    const res = await axios.get(`${BASE_URL}/api/subject`)
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/subject`)
     // console.log(res.data);
     setData(res.data.data);
   }
@@ -65,7 +65,7 @@ const Subject = () => {
   // handle delete logic
   const handleDelete = async (id) => {
     // console.log(id)
-    const res = await axios.delete(`${BASE_URL}/api/subject/${id}`);
+    const res = await axios.delete(`${import.meta.env.VITE_API_URL}/api/subject/${id}`);
     if (res) {
       alert("Deleted Successfully");
     }
