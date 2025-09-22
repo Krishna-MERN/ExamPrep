@@ -8,7 +8,7 @@ const ViewMessages = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/contact");
+        const response = await fetch(`${BASE_URL}/api/contact`);
         const data = await response.json();
         setMessages(data);
         setLoading(false);

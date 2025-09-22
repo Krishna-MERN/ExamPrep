@@ -14,7 +14,7 @@ const ContactA = () => {
   const fetchUserMessages = async () => {
     if (!userId) return;
     try {
-      const res = await axios.get(`http://localhost:5000/api/message/user/${userId}`);
+      const res = await axios.get(`${BASE_URL}/api/message/user/${userId}`);
       setMessages(res.data.message || []);
     } catch (err) {
       console.error('Error fetching user messages:', err);

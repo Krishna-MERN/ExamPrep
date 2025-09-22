@@ -19,7 +19,7 @@ const Registration = () => {
   useEffect(() => {
     const handlefetch = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/session");
+        const res = await axios.get(`${BASE_URL}`/api/session``);
         setSessions(res.data.data);
       } catch (er) {
         console.log(er);
@@ -38,7 +38,7 @@ const Registration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/examinee', formData);
+      const res = await axios.post(`${BASE_URL}/api/examinee`, formData);
       alert('You have Registered Successfully...\n Check your Emailbox for Confirmation.\n\n You Can Login Now');
       setFormData({
         name: '',
