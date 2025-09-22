@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../styles/viewmessage.css"; // external css
+import "../styles/viewMessage.css"; // external css
 
 const ViewMessages = () => {
  const [messages, setMessages] = useState([]);
