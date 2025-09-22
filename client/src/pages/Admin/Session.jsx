@@ -33,7 +33,7 @@ const Session = () => {
     e.preventDefault();
     try {
       if (editform) {
-        const res = await axios.put(`${BASE_URL}/api/session/${id.id}`, form);
+        const res = await axios.put(`${import.meta.env.VITE_API_URL}/api/session/${id.id}`, form);
         if (res) {
           alert('Session updated Successfully')
           handlefetch();
@@ -41,7 +41,7 @@ const Session = () => {
         }
       }
       else {
-        const res = await axios.post(`${BASE_URL}/api/session`, form)
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/session`, form)
         if (res) {
           alert('Session Added Successfully')
           handlefetch();
@@ -55,7 +55,7 @@ const Session = () => {
   }
   // fetch data api
   const handlefetch = async () => {
-    const res = await axios.get(`${BASE_URL}/api/session`)
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/session`)
     // console.log(res.data);
     setData(res.data.data);
   }
@@ -67,7 +67,7 @@ const Session = () => {
   // handle delete logic
   const handleDelete = async (id) => {
     // console.log(id)
-    const res = await axios.delete(`${BASE_URL}/api/session/${id}`);
+    const res = await axios.delete(`${import.meta.env.VITE_API_URL}/api/session/${id}`);
     if (res) {
       alert("Deleted Successfully");
     }

@@ -16,7 +16,7 @@ const AdminLogin = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const res = await axios.post(`${BASE_URL}/api/admin/login`, form);
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/admin/login`, form);
 
         if (res.data.message === "Login Successfully") {
             localStorage.setItem("role", res.data.admin.role);
