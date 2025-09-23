@@ -88,64 +88,61 @@ router.get('/',async(req,res)=>{
 })
 
 
-router.post('/',async(req,res)=>{
-  const {email,name}=req.body;
-  const existingExaminee=await Examinee.findOne({email:email});
-  if(existingExaminee){
-    return res.status(400).json({message:"Examinee with this email is already exists"});
-  }
-    const examinee = await new Examinee(req.body);
-    examinee.save()
-     res.status(200).json(" Examinee registered successfully");
+router.post('/', async (req, res) => {
+  try {
+    const { email, name } = req.body;
+
+    // Check if user exists
+    const existingExaminee = await Examinee.findOne({ email });
+    if (existingExaminee) {
+      return res.status(400).json({ message: "Examinee with this email already exists" });
+    }
+
+    // Save user
+    const examinee = new Examinee(req.body);
+    await examinee.save();
+
+    // Prepare HTML email
     const html = `
-  <div style="font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #e3f2fd, #ffffff); padding: 40px;">
-    <div style="max-width: 650px; margin: auto; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); overflow: hidden;">
-     
-      <!-- Header -->
-      <div style="background: linear-gradient(90deg, #007bff, #00c6ff); padding: 25px; text-align: center;">
-        <h1 style="color: #ffffff; margin: 0; font-size: 28px;">🎓 Welcome to ExamPrep!</h1>
-      </div>
-     
-      <!-- Body -->
-      <div style="padding: 30px;">
-        <p style="font-size: 18px; color: #333;"><strong>Dear ${name},</strong></p>
-
-        <p style="font-size: 16px; color: #555; line-height: 1.6;">
-          We're excited to welcome you to the <strong>ExamPrep </strong>! Your registration was successful, and your account is now active.
-        </p>
-
-        <p style="font-size: 16px; color: #555; line-height: 1.6;">
-          You can now log in to access your dashboard, take exams, track your progress, and explore learning resources.
-        </p>
-
-        <!-- CTA Button -->
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="https://localhost:5000/login; style="background: #007bff; color: #fff; padding: 12px 24px; font-size: 16px; border-radius: 6px; text-decoration: none; display: inline-block;">
-            🔐 Log in to Your Account
-          </a>
+      <div style="font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #e3f2fd, #ffffff); padding: 40px;">
+        <div style="max-width: 650px; margin: auto; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); overflow: hidden;">
+          <div style="background: linear-gradient(90deg, #007bff, #00c6ff); padding: 25px; text-align: center;">
+            <h1 style="color: #ffffff; margin: 0; font-size: 28px;">🎓 Welcome to ExamPrep!</h1>
+          </div>
+          <div style="padding: 30px;">
+            <p style="font-size: 18px; color: #333;"><strong>Dear ${name},</strong></p>
+            <p style="font-size: 16px; color: #555; line-height: 1.6;">
+              We're excited to welcome you to the <strong>ExamPrep</strong>! Your registration was successful, and your account is now active.
+            </p>
+            <p style="text-align: center; margin: 30px 0;">
+              <a href="https://examprep1.vercel.app/login" style="background: #007bff; color: #fff; padding: 12px 24px; font-size: 16px; border-radius: 6px; text-decoration: none; display: inline-block;">
+                🔐 Log in to Your Account
+              </a>
+            </p>
+            <p style="font-size: 16px; color: #555;">If you have any questions or face issues logging in, feel free to contact our support team.</p>
+            <p style="margin-top: 30px; font-size: 16px; color: #333;">
+              Best regards,<br><strong>Team ExamPrep</strong>
+            </p>
+          </div>
+          <div style="background-color: #f1f1f1; text-align: center; padding: 20px; font-size: 12px; color: #777;">
+            This is an automated system-generated message. Please do not reply to this email.
+          </div>
         </div>
-
-        <p style="font-size: 16px; color: #555;">
-          If you have any questions or face issues logging in, feel free to contact our support team.
-        </p>
-
-        <p style="margin-top: 30px; font-size: 16px; color: #333;">
-          Best regards,<br>
-          <strong>Team ExamPrep</strong>
-        </p>
       </div>
+    `;
 
-      <!-- Footer -->
-      <div style="background-color: #f1f1f1; text-align: center; padding: 20px; font-size: 12px; color: #777;">
-        This is an automated System generated message. Please do not reply to this email. 
-      </div>
-    </div>
-  </div>
-`;
-    setTimeout(async()=>{
-        await sendEmail(email,"welcome to the exam portal",html)
-    },100)
+    // Send email
+    await sendEmail(email, "Welcome to the ExamPrep Portal", html);
+
+    // Send success response
+    res.status(200).json({ message: "Examinee registered successfully, email sent!" });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Registration failed", error: error.message });
+  }
 });
+
 router.delete('/:id',async(req,res)=>{
     const {id}= req.params
     const examinee = await Examinee.findByIdAndDelete(id);

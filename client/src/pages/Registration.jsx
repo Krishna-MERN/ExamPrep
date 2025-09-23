@@ -16,6 +16,7 @@ const Registration = () => {
   });
 
   const [sessions, setSessions] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const handlefetch = async () => {
@@ -24,6 +25,7 @@ const Registration = () => {
         setSessions(res.data.data);
       } catch (er) {
         console.log(er);
+        setErrorMessage("Failed to load sessions. Try again later.");
       }
     };
     handlefetch();
@@ -36,13 +38,24 @@ const Registration = () => {
     });
   };
 
+  const validateForm = () => {
+    const { name, email, number, address, password, college, qualification, session } = formData;
+    if (!name || !email || !number || !address || !password || !college || !qualification || !session) {
+      setErrorMessage("Please fill in all fields correctly.");
+      return false;
+    }
+    setErrorMessage("");
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
+    console.log("Submitting form data:", formData); // debug payload
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/api/examinee`, formData);
-      alert(
-        "You have Registered Successfully...\n Check your Emailbox for Confirmation.\n\n You Can Login Now"
-      );
+      alert("You have Registered Successfully. Check your email for confirmation.");
       setFormData({
         name: "",
         email: "",
@@ -54,8 +67,8 @@ const Registration = () => {
         session: "",
       });
     } catch (error) {
-      console.error("Submission error:", error);
-      alert("Failed to Register");
+      console.error("Submission error:", error.response?.data || error);
+      setErrorMessage(error.response?.data?.message || "Failed to register. Check your input.");
     }
   };
 
@@ -153,6 +166,11 @@ const Registration = () => {
       cursor: "pointer",
       marginTop: "10px",
     },
+    errorText: {
+      color: "red",
+      marginBottom: "10px",
+      textAlign: "center",
+    },
   };
 
   return (
@@ -160,13 +178,12 @@ const Registration = () => {
       <div style={styles.card} className="responsive-card">
         {/* Left Panel */}
         <div style={styles.leftPanel}>
-            <img
+          <img
             src={loginImage}
             alt="Login Illustration"
             style={{ width: "70%", maxWidth: "320px", marginBottom: "15px" }}
           />
           <div style={{ fontSize: "28px", fontWeight: "700", marginBottom: "15px" }}>
-           
             Welcome to ExamPrep
           </div>
           <div style={{ fontSize: "15px", opacity: 0.9, maxWidth: "250px" }}>
@@ -181,6 +198,7 @@ const Registration = () => {
             <div style={{ textAlign: "center" }}>
               <div style={styles.heading}>Registration Page</div>
             </div>
+            {errorMessage && <div style={styles.errorText}>{errorMessage}</div>}
             <br />
             <div style={styles.row}>
               <input

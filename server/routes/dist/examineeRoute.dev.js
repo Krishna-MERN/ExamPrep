@@ -150,97 +150,152 @@ router.get('/', function _callee3(req, res) {
     }
   });
 });
-router.post('/', function _callee5(req, res) {
+router.post('/', function _callee4(req, res) {
   var _req$body2, email, name, existingExaminee, examinee, html;
 
-  return regeneratorRuntime.async(function _callee5$(_context5) {
+  return regeneratorRuntime.async(function _callee4$(_context4) {
     while (1) {
-      switch (_context5.prev = _context5.next) {
+      switch (_context4.prev = _context4.next) {
         case 0:
-          _req$body2 = req.body, email = _req$body2.email, name = _req$body2.name;
-          _context5.next = 3;
+          _context4.prev = 0;
+          _req$body2 = req.body, email = _req$body2.email, name = _req$body2.name; // Check if user exists
+
+          _context4.next = 4;
           return regeneratorRuntime.awrap(Examinee.findOne({
             email: email
           }));
 
-        case 3:
-          existingExaminee = _context5.sent;
+        case 4:
+          existingExaminee = _context4.sent;
 
           if (!existingExaminee) {
-            _context5.next = 6;
+            _context4.next = 7;
             break;
           }
 
-          return _context5.abrupt("return", res.status(400).json({
-            message: "Examinee with this email is already exists"
+          return _context4.abrupt("return", res.status(400).json({
+            message: "Examinee with this email already exists"
           }));
 
-        case 6:
-          _context5.next = 8;
-          return regeneratorRuntime.awrap(new Examinee(req.body));
+        case 7:
+          // Save user
+          examinee = new Examinee(req.body);
+          _context4.next = 10;
+          return regeneratorRuntime.awrap(examinee.save());
 
-        case 8:
-          examinee = _context5.sent;
-          examinee.save();
-          res.status(200).json(" Examinee registered successfully");
-          html = "\n  <div style=\"font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #e3f2fd, #ffffff); padding: 40px;\">\n    <div style=\"max-width: 650px; margin: auto; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); overflow: hidden;\">\n     \n      <!-- Header -->\n      <div style=\"background: linear-gradient(90deg, #007bff, #00c6ff); padding: 25px; text-align: center;\">\n        <h1 style=\"color: #ffffff; margin: 0; font-size: 28px;\">\uD83C\uDF93 Welcome to ExamPrep!</h1>\n      </div>\n     \n      <!-- Body -->\n      <div style=\"padding: 30px;\">\n        <p style=\"font-size: 18px; color: #333;\"><strong>Dear ".concat(name, ",</strong></p>\n\n        <p style=\"font-size: 16px; color: #555; line-height: 1.6;\">\n          We're excited to welcome you to the <strong>ExamPrep </strong>! Your registration was successful, and your account is now active.\n        </p>\n\n        <p style=\"font-size: 16px; color: #555; line-height: 1.6;\">\n          You can now log in to access your dashboard, take exams, track your progress, and explore learning resources.\n        </p>\n\n        <!-- CTA Button -->\n        <div style=\"text-align: center; margin: 30px 0;\">\n          <a href=\"https://localhost:5000/login; style=\"background: #007bff; color: #fff; padding: 12px 24px; font-size: 16px; border-radius: 6px; text-decoration: none; display: inline-block;\">\n            \uD83D\uDD10 Log in to Your Account\n          </a>\n        </div>\n\n        <p style=\"font-size: 16px; color: #555;\">\n          If you have any questions or face issues logging in, feel free to contact our support team.\n        </p>\n\n        <p style=\"margin-top: 30px; font-size: 16px; color: #333;\">\n          Best regards,<br>\n          <strong>Team ExamPrep</strong>\n        </p>\n      </div>\n\n      <!-- Footer -->\n      <div style=\"background-color: #f1f1f1; text-align: center; padding: 20px; font-size: 12px; color: #777;\">\n        This is an automated System generated message. Please do not reply to this email. \n      </div>\n    </div>\n  </div>\n");
-          setTimeout(function _callee4() {
-            return regeneratorRuntime.async(function _callee4$(_context4) {
-              while (1) {
-                switch (_context4.prev = _context4.next) {
-                  case 0:
-                    _context4.next = 2;
-                    return regeneratorRuntime.awrap(sendEmail(email, "welcome to the exam portal", html));
+        case 10:
+          // Prepare HTML email
+          html = "\n      <div style=\"font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #e3f2fd, #ffffff); padding: 40px;\">\n        <div style=\"max-width: 650px; margin: auto; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); overflow: hidden;\">\n          <div style=\"background: linear-gradient(90deg, #007bff, #00c6ff); padding: 25px; text-align: center;\">\n            <h1 style=\"color: #ffffff; margin: 0; font-size: 28px;\">\uD83C\uDF93 Welcome to ExamPrep!</h1>\n          </div>\n          <div style=\"padding: 30px;\">\n            <p style=\"font-size: 18px; color: #333;\"><strong>Dear ".concat(name, ",</strong></p>\n            <p style=\"font-size: 16px; color: #555; line-height: 1.6;\">\n              We're excited to welcome you to the <strong>ExamPrep</strong>! Your registration was successful, and your account is now active.\n            </p>\n            <p style=\"text-align: center; margin: 30px 0;\">\n              <a href=\"https://examprep1.vercel.app/login\" style=\"background: #007bff; color: #fff; padding: 12px 24px; font-size: 16px; border-radius: 6px; text-decoration: none; display: inline-block;\">\n                \uD83D\uDD10 Log in to Your Account\n              </a>\n            </p>\n            <p style=\"font-size: 16px; color: #555;\">If you have any questions or face issues logging in, feel free to contact our support team.</p>\n            <p style=\"margin-top: 30px; font-size: 16px; color: #333;\">\n              Best regards,<br><strong>Team ExamPrep</strong>\n            </p>\n          </div>\n          <div style=\"background-color: #f1f1f1; text-align: center; padding: 20px; font-size: 12px; color: #777;\">\n            This is an automated system-generated message. Please do not reply to this email.\n          </div>\n        </div>\n      </div>\n    "); // Send email
 
-                  case 2:
-                  case "end":
-                    return _context4.stop();
-                }
-              }
-            });
-          }, 100);
+          _context4.next = 13;
+          return regeneratorRuntime.awrap(sendEmail(email, "Welcome to the ExamPrep Portal", html));
 
         case 13:
+          // Send success response
+          res.status(200).json({
+            message: "Examinee registered successfully, email sent!"
+          });
+          _context4.next = 20;
+          break;
+
+        case 16:
+          _context4.prev = 16;
+          _context4.t0 = _context4["catch"](0);
+          console.error(_context4.t0);
+          res.status(500).json({
+            message: "Registration failed",
+            error: _context4.t0.message
+          });
+
+        case 20:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  }, null, null, [[0, 16]]);
+});
+router["delete"]('/:id', function _callee5(req, res) {
+  var id, examinee;
+  return regeneratorRuntime.async(function _callee5$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          id = req.params.id;
+          _context5.next = 3;
+          return regeneratorRuntime.awrap(Examinee.findByIdAndDelete(id));
+
+        case 3:
+          examinee = _context5.sent;
+          return _context5.abrupt("return", res.json({
+            message: "Deleted successfully"
+          }));
+
+        case 5:
         case "end":
           return _context5.stop();
       }
     }
   });
 });
-router["delete"]('/:id', function _callee6(req, res) {
-  var id, examinee;
+router.post('/login', function _callee6(req, res) {
+  var _req$body3, email, password, examinee;
+
   return regeneratorRuntime.async(function _callee6$(_context6) {
     while (1) {
       switch (_context6.prev = _context6.next) {
         case 0:
-          id = req.params.id;
+          _req$body3 = req.body, email = _req$body3.email, password = _req$body3.password;
           _context6.next = 3;
-          return regeneratorRuntime.awrap(Examinee.findByIdAndDelete(id));
+          return regeneratorRuntime.awrap(Examinee.findOne({
+            email: email
+          }));
 
         case 3:
           examinee = _context6.sent;
+
+          if (examinee) {
+            _context6.next = 6;
+            break;
+          }
+
           return _context6.abrupt("return", res.json({
-            message: "Deleted successfully"
+            message: "Your Email Incorrect"
           }));
 
-        case 5:
+        case 6:
+          if (!(examinee.password == password)) {
+            _context6.next = 8;
+            break;
+          }
+
+          return _context6.abrupt("return", res.json({
+            message: "Login Successfully",
+            user: {
+              email: examinee.email,
+              role: "user",
+              id: examinee._id
+            }
+          }));
+
+        case 8:
         case "end":
           return _context6.stop();
       }
     }
   });
-});
-router.post('/login', function _callee7(req, res) {
-  var _req$body3, email, password, examinee;
+}); // change pASSword LOGIC
+
+router.put('/change/:id', function _callee7(req, res) {
+  var _req$body4, op, np, cnp, examinee, updateExaminee;
 
   return regeneratorRuntime.async(function _callee7$(_context7) {
     while (1) {
       switch (_context7.prev = _context7.next) {
         case 0:
-          _req$body3 = req.body, email = _req$body3.email, password = _req$body3.password;
+          _req$body4 = req.body, op = _req$body4.op, np = _req$body4.np, cnp = _req$body4.cnp;
           _context7.next = 3;
-          return regeneratorRuntime.awrap(Examinee.findOne({
-            email: email
+          return regeneratorRuntime.awrap(Examinee.find({
+            _id: req.params.id
           }));
 
         case 3:
@@ -252,80 +307,32 @@ router.post('/login', function _callee7(req, res) {
           }
 
           return _context7.abrupt("return", res.json({
-            message: "Your Email Incorrect"
-          }));
-
-        case 6:
-          if (!(examinee.password == password)) {
-            _context7.next = 8;
-            break;
-          }
-
-          return _context7.abrupt("return", res.json({
-            message: "Login Successfully",
-            user: {
-              email: examinee.email,
-              role: "user",
-              id: examinee._id
-            }
-          }));
-
-        case 8:
-        case "end":
-          return _context7.stop();
-      }
-    }
-  });
-}); // change pASSword LOGIC
-
-router.put('/change/:id', function _callee8(req, res) {
-  var _req$body4, op, np, cnp, examinee, updateExaminee;
-
-  return regeneratorRuntime.async(function _callee8$(_context8) {
-    while (1) {
-      switch (_context8.prev = _context8.next) {
-        case 0:
-          _req$body4 = req.body, op = _req$body4.op, np = _req$body4.np, cnp = _req$body4.cnp;
-          _context8.next = 3;
-          return regeneratorRuntime.awrap(Examinee.find({
-            _id: req.params.id
-          }));
-
-        case 3:
-          examinee = _context8.sent;
-
-          if (examinee) {
-            _context8.next = 6;
-            break;
-          }
-
-          return _context8.abrupt("return", res.json({
             message: "User not found"
           }));
 
         case 6:
           if (!(examinee[0].password !== op)) {
-            _context8.next = 8;
+            _context7.next = 8;
             break;
           }
 
-          return _context8.abrupt("return", res.json({
+          return _context7.abrupt("return", res.json({
             message: "Old password is incorrect"
           }));
 
         case 8:
           if (!(np !== cnp)) {
-            _context8.next = 10;
+            _context7.next = 10;
             break;
           }
 
-          return _context8.abrupt("return", res.json({
+          return _context7.abrupt("return", res.json({
             message: "New password and confirm password do not match"
           }));
 
         case 10:
-          _context8.prev = 10;
-          _context8.next = 13;
+          _context7.prev = 10;
+          _context7.next = 13;
           return regeneratorRuntime.awrap(Examinee.findByIdAndUpdate(req.params.id, {
             password: np
           }, {
@@ -333,21 +340,21 @@ router.put('/change/:id', function _callee8(req, res) {
           }));
 
         case 13:
-          updateExaminee = _context8.sent;
-          _context8.next = 20;
+          updateExaminee = _context7.sent;
+          _context7.next = 20;
           break;
 
         case 16:
-          _context8.prev = 16;
-          _context8.t0 = _context8["catch"](10);
-          console.error('Error updating password:', _context8.t0);
-          return _context8.abrupt("return", res.status(500).json({
+          _context7.prev = 16;
+          _context7.t0 = _context7["catch"](10);
+          console.error('Error updating password:', _context7.t0);
+          return _context7.abrupt("return", res.status(500).json({
             message: "Server error while changing password"
           }));
 
         case 20:
         case "end":
-          return _context8.stop();
+          return _context7.stop();
       }
     }
   }, null, null, [[10, 16]]);

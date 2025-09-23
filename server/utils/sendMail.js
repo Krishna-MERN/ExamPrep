@@ -1,29 +1,28 @@
-const nodemailer = require("nodemailer");
+// server/utils/sendEmail.js
+const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const sendEmail = async (to, subject, message) => {
+const sendMail = async (to, subject, html) => {
   try {
-    await transporter.sendMail({
-      from: `"ExamPrep Examination Portal" <${process.env.EMAIL_USER}>`,
+    const msg = {
       to,
+      from: process.env.EMAIL_FROM,
       subject,
-      html: message,
-    });
-    console.log("Email sent successfully");
+      html,
+    };
+
+    await sgMail.send(msg);
+    console.log("Email sent successfully to", to);
     return true;
   } catch (error) {
     console.error("Error sending email:", error);
+    if (error.response) {
+      console.error(error.response.body);
+    }
     return false;
   }
 };
 
-module.exports = sendEmail;
-
+module.exports = sendMail;
