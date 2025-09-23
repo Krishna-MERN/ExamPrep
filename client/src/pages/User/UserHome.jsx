@@ -1,112 +1,127 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
 const UserHome = () => {
   const examineId = localStorage.getItem('userId');
-  const [data, setData] = React.useState([]);
-  const [reslt, setreslt] = useState([]);
 
-  const handlefetch = async () => {
+  const [exams, setExams] = useState([]);
+  const [passed, setPassed] = useState(0);
+
+  // Fetch exams and results
+  const handleFetch = async () => {
     try {
+      // Fetch exams
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/dashboard/exams/${examineId}`);
       const result = await response.json();
-      setData(result);
+      console.log("Exams API response:", result);
+
+      // Adjust based on API response structure
+      const examsArray = Array.isArray(result) ? result : result.data || [];
+      setExams(examsArray);
+
+      // Fetch results
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/dashboard/examinee-result/${examineId}`);
-      console.log(res.data.message)
-      setreslt(Array.isArray(res.data.message) ? res.data.message : [res.data.message]);
+      console.log("Result API response:", res.data.message);
+
+      const passedCount = typeof res.data.message === "number"
+        ? res.data.message
+        : Array.isArray(res.data.message)
+          ? res.data.message.length
+          : 0;
+
+      setPassed(passedCount);
 
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
     }
   };
+
   useEffect(() => {
-    handlefetch();
+    handleFetch();
   }, []);
 
-{console.log(reslt)}
+  // Calculations
+  const totalExams = exams.length;
+  const failed = totalExams - passed;
+  const progress = totalExams ? Math.round((passed / totalExams) * 100) : 0;
+
   return (
-    <div>
-      <div className='container-fluid p-0'>
-        <div className="row ">
-          <div className="col-sm-12 ">
-            <div
-              className="card p-2"
-              style={{
-                border: "1px solid #6f42c1",
-                minHeight: "170px",
-                width: "100%",
-              }}
-            >
-              <div className="row mb-4">
-                {/* Total Exams Card */}
-                <div className="col-sm-4">
-                  <div className=" shadow p-4 bg-light text-center" style={{
-                    border: "1px solid #6f42c1",
+    <div className="container-fluid p-3">
+      <div className="row mb-4">
+        {/* Total Exams */}
+        <div className="col-sm-4 mb-3">
+          <div className="shadow p-4 bg-light text-center" style={{ border: "1px solid #6f42c1" }}>
+            <u style={{ color: "#6f42c1" }}>
+              <h5 className="fw-bold">
+                <i className="fa-solid fa-file-lines me-2"></i>Total Exams
+              </h5>
+            </u>
+            <h5>{totalExams}</h5>
+          </div>
+        </div>
 
+        {/* Result Summary */}
+        <div className="col-sm-4 mb-3">
+          <div className="shadow p-4 bg-light text-center" style={{ border: "1px solid #6f42c1" }}>
+            <u style={{ color: "#6f42c1" }}>
+              <h6 className="fw-bold">
+                <i className="fa-solid fa-chart-line me-2"></i>Result Summary
+              </h6>
+            </u>
+            <h6 className="fw-bold text-success mb-1">
+              <i className="fa-solid fa-circle-check me-2"></i>Passed: {passed}
+            </h6>
+            <h6 className="fw-bold text-danger">
+              <i className="fa-solid fa-circle-xmark me-2"></i>Failed: {failed}
+            </h6>
+          </div>
+        </div>
 
-                  }}
-                  >
-
-                    <u style={{ color: "#6f42c1" }}> <h5 className="fw-bold" style={{ height: "48px", color: "#6f42c1" }}>
-                      <i className="fa-solid fa-file-lines me-2"></i>Total Exams
-                    </h5></u>
-                    <h5>{data}</h5>
-
-                  </div>
-                </div>
-
-                {/* Result Card: Passed & Failed */}
-                <div className="col-sm-4">
-                  <div className=" shadow p-4 bg-light text-center" style={{
-                    border: "1px solid #6f42c1",
-
-
-                  }} >
-                    <u style={{ color: "#6f42c1" }}><h6 className="fw-bold" style={{ height: "30px", color: "#6f42c1" }}>
-                      <i className="fa-solid fa-chart-line me-2"></i>Result Summary
-                    </h6></u>
-                    <h6 className="fw-bold text-success mb-1">
-                      <i className="fa-solid fa-circle-check me-2"></i>Passed : {reslt}
-                    </h6>
-                    <h6 className="fw-bold text-danger">
-                      <i className="fa-solid fa-circle-xmark me-2"></i>Failed: {data - reslt}
-                    </h6>
-
-                  </div>
-                </div>
-                <div className="col-sm-4">
-                  <div className=" shadow  h-100 p-4 bg-light text-center" style={{
-                    border: "1px solid #6f42c1",
-
-
-                  }} >
-                    <u style={{ color: "#6f42c1" }}><h6 className="fw-bold" style={{ height: "30px", color: "#6f42c1" }}>
-                      <i className="fa-solid fa-chart-line me-2"></i>Overall Performance
-                    </h6></u>
-                    <div className="progress" style={{ height: "20px" }}>
-                      <div
-                        className="progress-bar bg-success"
-                        role="progressbar"
-                        style={{ width: `${(reslt / data) * 100 || 0}%` }}
-                        aria-valuenow={(reslt / data) * 100 || 0}
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      >
-                        {(reslt / data) * 100 || 0}%
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
+        {/* Overall Performance */}
+        <div className="col-sm-4 mb-3">
+          <div className="shadow p-4 bg-light text-center" style={{ border: "1px solid #6f42c1" }}>
+            <u style={{ color: "#6f42c1" }}>
+              <h6 className="fw-bold">
+                <i className="fa-solid fa-chart-line me-2"></i>Overall Performance
+              </h6>
+            </u>
+            <div className="progress" style={{ height: "20px" }}>
+              <div
+                className="progress-bar bg-success"
+                role="progressbar"
+                style={{ width: `${progress}%` }}
+                aria-valuenow={progress}
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                {progress}%
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Exam Marks Table */}
-       
+      {/* Optional: Display exam list */}
+      <div className="row">
+        <div className="col-12">
+          <div className="card p-3" style={{ border: "1px solid #6f42c1" }}>
+            <h5 className="fw-bold mb-3" style={{ color: "#6f42c1" }}>Exams List</h5>
+            {totalExams > 0 ? (
+              <ul className="list-group">
+                {exams.map((exam, index) => (
+                  <li className="list-group-item" key={index}>
+                    {exam.name || `Exam ${index + 1}`}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No exams found.</p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default UserHome
+export default UserHome;

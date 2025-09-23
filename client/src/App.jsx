@@ -24,7 +24,7 @@ import ExamResultsDeclaration from "./pages/Admin/ExamResultDeclaration";
 import Result from "./pages/User/Result";
 import AdminHome from "./pages/Admin/AdminHome";
 import Component from "./pages/Component";
-// import UserHome from "./pages/User/UserHome";
+import UserHome from "./pages/User/UserHome";
 import Hero from "./pages/Hero";
 import Navbar from "./pages/Navbar";
 import Footer from "./pages/Footer";
@@ -36,7 +36,7 @@ function App() {
   return (
     <>
       <Router>
-        <Navbar/>
+        {/* <Navbar/> */}
         <Routes>
           {/* registration route */}
           <Route path="*" element={<Component/>}></Route>
@@ -63,7 +63,7 @@ function App() {
           </Route>
           <Route path="*" element={<Component/>}></Route>
           <Route path="/userdash/" element={<UserDash />}>
-          {/* <Route index element={<UserHome/>}></Route> */}
+          <Route index element={<UserHome/>}></Route>
           <Route path="contact1" element={<ContactA/>}></Route>
           <Route path="myexam" element={<MyExam/>}></Route>
           <Route path="profile" element={<Profile/>}></Route>

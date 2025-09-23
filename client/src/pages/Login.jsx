@@ -6,7 +6,7 @@ import { Link } from "react-router";
 const Login = () => {
   const [data, setData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
   const handleChange = (e) => {
@@ -17,7 +17,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/examinee/login`, data);
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/examinee/login`,
+        data
+      );
 
       if (res.data.message === "Login Successfully") {
         localStorage.setItem("userRole", res.data.user.role);
@@ -36,21 +39,23 @@ const Login = () => {
 
   const styles = {
     page: {
-      height: "100vh",
+      minHeight: "100vh",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
       background: "linear-gradient(135deg, #4a3365ff, #ac66e9ff, #3c2e58ff)",
-      fontFamily: "Segoe UI, sans-serif"
+      fontFamily: "Segoe UI, sans-serif",
+      padding: "20px",
     },
     card: {
-      width: "900px",
-      height: "520px",
+      width: "100%",
+      maxWidth: "900px",
+      minHeight: "520px",
       display: "flex",
       borderRadius: "18px",
       overflow: "hidden",
       boxShadow: "0 25px 60px rgba(0,0,0,0.35)",
-      backgroundColor: "#fff"
+      backgroundColor: "#fff",
     },
     leftPanel: {
       flex: 1,
@@ -60,44 +65,25 @@ const Login = () => {
       flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
-      position: "relative",
-      padding: "30px"
-    },
-    abstractCircles: {
-      position: "absolute",
-      borderRadius: "50%",
-      background: "rgba(239, 104, 248, 0.15)",
-      zIndex: 0
-    },
-    bigCircle: {
-      width: "140px",
-      height: "140px",
-      top: "18%",
-      left: "10%"
-    },
-    smallCircle: {
-      width: "90px",
-      height: "90px",
-      bottom: "12%",
-      right: "10%"
+      padding: "30px",
+      textAlign: "center",
     },
     subheading: {
-      color: "#d4a3ffff",
-      fontSize: "30px",
-      marginBottom: "1px"
+      color: "#d4a3ff",
+      fontSize: "28px",
+      marginBottom: "8px",
     },
     welcomeText: {
-      fontSize: "20px",
+      fontSize: "18px",
       fontWeight: "600",
-      marginBottom: "5px",
-      zIndex: 1,
-      color: "#9582bcff"
+      marginBottom: "6px",
+      color: "#cbb7f0",
     },
     subText: {
-      fontSize: "15px",
+      fontSize: "14px",
       opacity: 0.9,
-      zIndex: 1,
-      textAlign: "center"
+      textAlign: "center",
+      maxWidth: "280px",
     },
     rightPanel: {
       flex: 1,
@@ -105,24 +91,25 @@ const Login = () => {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      padding: "30px"
+      padding: "30px",
     },
     formBox: {
       width: "100%",
-      maxWidth: "300px"
+      maxWidth: "320px",
     },
     heading: {
-      fontSize: "40px",
-      marginBottom: "2px",
+      fontSize: "32px",
+      marginBottom: "12px",
       fontWeight: "600",
       display: "inline-block",
       borderBottom: "4px solid",
-      color: "#4a0b65ff"
+      color: "#4a0b65ff",
     },
     label: {
-      fontSize: "15px",
+      fontSize: "14px",
       fontWeight: "500",
-      marginBottom: "1px"
+      marginBottom: "3px",
+      display: "block",
     },
     input: {
       width: "100%",
@@ -130,8 +117,8 @@ const Login = () => {
       border: "1px solid #ccc",
       borderRadius: "6px",
       fontSize: "14px",
-      marginBottom: "10px",
-      outline: "none"
+      marginBottom: "12px",
+      outline: "none",
     },
     submitBtn: {
       width: "100%",
@@ -143,31 +130,30 @@ const Login = () => {
       fontSize: "15px",
       fontWeight: "600",
       cursor: "pointer",
-      marginBottom: "10px",
-      marginTop: "5px"
+      marginBottom: "12px",
     },
     checkbox: {
       marginTop: "8px",
-      fontSize: "13px"
-    }
+      fontSize: "13px",
+      textAlign: "center",
+    },
   };
 
   return (
     <div style={styles.page}>
-     
-      <div style={styles.card}>
+      <div style={styles.card} className="responsive-login">
         {/* Left Panel */}
         <div style={styles.leftPanel}>
           <img
             src={loginImage}
             alt="Login Illustration"
-            style={{ width: "340px", marginBottom: "5px", zIndex: 1 }}
+            style={{ width: "70%", maxWidth: "320px", marginBottom: "15px" }}
           />
-
-          <div style={styles.subheading}>Welcome to Examprep! </div>
+          <div style={styles.subheading}>Welcome to Examprep!</div>
           <div style={styles.welcomeText}>"Your Journey Starts Here"</div>
           <div style={styles.subText}>
-            "Login to view your exams, results, and profile — all in one smart dashboard."
+            Login to view your exams, results, and profile — all in one smart
+            dashboard.
           </div>
         </div>
 
@@ -175,9 +161,7 @@ const Login = () => {
         <div style={styles.rightPanel}>
           <form onSubmit={handleSubmit} style={styles.formBox} method="POST">
             <div style={{ textAlign: "center" }}>
-              <div className="border-b-2" style={styles.heading}>
-                User Login
-              </div>
+              <div style={styles.heading}>User Login</div>
             </div>
             <br />
 
@@ -212,15 +196,32 @@ const Login = () => {
             </button>
 
             <div style={styles.checkbox}>
-              <input type="checkbox" id="exampleCheck1" />
-              <label htmlFor="exampleCheck1">
-                {" "}
-                Don't have an account? <Link to="/register">Register here</Link>.
-              </label>
+              Don’t have an account? <Link to="/register">Register here</Link>.
             </div>
           </form>
         </div>
       </div>
+
+      {/* Media Query */}
+      <style>
+        {`
+          .responsive-login {
+            flex-direction: row;
+          }
+          @media (max-width: 768px) {
+            .responsive-login {
+              flex-direction: column;
+              max-width: 100%;
+            }
+            .responsive-login > div {
+              width: 100% !important;
+            }
+            .responsive-login img {
+              max-width: 200px !important;
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };
