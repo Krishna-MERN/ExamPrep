@@ -40,10 +40,10 @@ function App() {
         <Routes>
           {/* registration route */}
           <Route path="*" element={<Component/>}></Route>
-          <Route path="/" element={<Hero/>}></Route>
+          <Route path="/dd" element={<Hero/>}></Route>
           <Route path="/contactus" element={<ContactUs/>}></Route>
           <Route path="/login" element={<Login />}></Route>
-          <Route path="/home" element={<Home/>}></Route>
+          <Route path="/" element={<Home/>}></Route>
           <Route path="/register" element={<Registration />}></Route>
           {/* admin route */}
           <Route path='/adlogin' element={<AdminLogin />}></Route>
@@ -78,7 +78,7 @@ function App() {
           <Route path="/questionbank" element={<QuestionBank />}></Route>
 
         </Routes>
-        <Footer/>
+        {/* <Footer/> */}
       </Router>
     </>
   );

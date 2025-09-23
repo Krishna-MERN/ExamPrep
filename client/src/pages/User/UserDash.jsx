@@ -100,7 +100,7 @@ const UserDash = () => {
         /* Sidebar */
         .sidebar {
           width: 220px;
-          background: linear-gradient(180deg,  #6A0DAD, #3c2e58ff);
+          background: linear-gradient(180deg,  #4a3365ff, #ac66e9ff, #3c2e58ff);
           color: white;
           padding: 20px;
           display: flex;
@@ -174,7 +174,7 @@ const UserDash = () => {
           justify-content: space-between;
           align-items: center;
           padding: 15px 25px;
-          background: linear-gradient(90deg, #390b4dff, #7a17d1ff);
+          background: linear-gradient(90deg,  #4a3365ff, #ac66e9ff, #3c2e58ff);
           color: white;
           box-shadow: 0 4px 8px rgba(0,0,0,0.1);
           border-radius: 0 0 12px 12px;
