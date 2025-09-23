@@ -2,7 +2,7 @@ import React from "react";
 import heroImage from "../assets/images/hero.png"; 
 // Add your image here
 import { Link } from "react-router";
-import Hero from "./Hero";
+import ContactUs from "./ContactUs";
 
 const Home = () => {
   return (
@@ -173,19 +173,20 @@ const Home = () => {
         >
           Register Now
         </Link>
+        </section>
+<ContactUs/>
 <footer
         style={{
           padding: "25px ",
           marginTop:"20px",
           textAlign: "center",
-         // background: "linear-gradient(135deg, #4a3365ff, #ac66e9ff, #3c2e58ff)",
+         background: "linear-gradient(135deg, #4a3365ff, #ac66e9ff, #3c2e58ff)",
           color: "#fff",
         }}
       >
         <p>&copy; 2025 ExamPrep. All Rights Reserved.</p>
       </footer>
-      </section>
-
+      
       {/* Footer */}
       
 
