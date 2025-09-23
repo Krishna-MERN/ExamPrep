@@ -23,36 +23,48 @@ const UserDash = () => {
         </div>
         <ul className="nav-links list-unstyled">
           <li>
-            <i className="fa-solid fa-user me-2"></i>
-            <Link to="/userdash/profile" className="text-white text-decoration-none">Profile</Link>
+            <i className="fa-solid fa-user"></i>
+            <span className="link-text">
+              <Link to="/userdash/profile" className="text-white text-decoration-none">Profile</Link>
+            </span>
           </li>
           <li>
-            <i className="fa-solid fa-pen-to-square me-2"></i>
-            <Link to="/userdash/myexam" className="text-white text-decoration-none">My Exams</Link>
+            <i className="fa-solid fa-pen-to-square"></i>
+            <span className="link-text">
+              <Link to="/userdash/myexam" className="text-white text-decoration-none">My Exams</Link>
+            </span>
           </li>
           <li>
-            <i className="fa-solid fa-trophy me-2"></i>
-            <Link to="/userdash/results" className="text-white text-decoration-none">Result</Link>
+            <i className="fa-solid fa-trophy"></i>
+            <span className="link-text">
+              <Link to="/userdash/results" className="text-white text-decoration-none">Result</Link>
+            </span>
           </li>
           <li>
-            <i className="fa-solid fa-key me-2"></i>
-            <Link to="/userdash/chanpass" className="text-white text-decoration-none">Change Password</Link>
+            <i className="fa-solid fa-key"></i>
+            <span className="link-text">
+              <Link to="/userdash/chanpass" className="text-white text-decoration-none">Change Key</Link>
+            </span>
           </li>
           <li>
-            <i className="fa-solid fa-message me-2"></i>
-            <Link to="/userdash/contact1" className="text-white text-decoration-none">Contact Us</Link>
+            <i className="fa-solid fa-message"></i>
+            <span className="link-text">
+              <Link to="/userdash/contact1" className="text-white text-decoration-none">Contact Us</Link>
+            </span>
           </li>
           <li>
-            <i className="fa-solid fa-arrow-right-from-bracket me-2"></i>
-            <Link
-              className="text-white text-decoration-none"
-              onClick={() => {
-                localStorage.clear();
-                window.location.href = '/';
-              }}
-            >
-              Log Out
-            </Link>
+            <i className="fa-solid fa-arrow-right-from-bracket"></i>
+            <span className="link-text">
+              <Link
+                className="text-white text-decoration-none"
+                onClick={() => {
+                  localStorage.clear();
+                  window.location.href = '/';
+                }}
+              >
+                Log Out
+              </Link>
+            </span>
           </li>
         </ul>
       </div>
@@ -63,7 +75,8 @@ const UserDash = () => {
           <div className="greeting">
             {getGreeting()}, <b>{email}</b>
           </div>
-          <h4 className="dashboard-title">Examinee Dashboard</h4>
+            <Link className="nav-links text-light fs-5 text-decoration-none" to="/userdash">
+          <h4 className="dashboard-title">Examinee Dashboard</h4></Link>
         </div>
         <div className="content">
           <Outlet />
@@ -86,7 +99,7 @@ const UserDash = () => {
 
         /* Sidebar */
         .sidebar {
-          width: 250px;
+          width: 220px;
           background: linear-gradient(180deg,  #6A0DAD, #3c2e58ff);
           color: white;
           padding: 20px;
@@ -105,10 +118,20 @@ const UserDash = () => {
           padding-bottom: 0.5rem;
         }
 
+        .nav-links {
+          display: flex;
+          flex-wrap: wrap; 
+          justify-content: space-around;
+          padding: 0;
+          gap: 6px;
+        }
+
         .nav-links li {
-          margin: 15px 0;
-          padding: 8px 12px;
-          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          margin: 4px 0;
+          padding: 6px 10px;
+          border-radius: 6px;
           transition: all 0.3s ease;
         }
 
@@ -117,15 +140,28 @@ const UserDash = () => {
           cursor: pointer;
         }
 
-        .nav-links li i {
+        .nav-links i {
           width: 20px;
+          text-align: center;
         }
 
-        .nav-links a {
-          font-weight: 500;
+        /* Fixed width for link-text on laptop & desktop */
+        @media (min-width: 769px) {
+          .link-text {
+            min-width: 100px;
+            max-width: 120px;
+            display: inline-block;
+            white-space: nowrap;
+          }
         }
 
-        /* Main content */
+        /* Gradually shrink link-text on smaller screens */
+        @media (max-width: 768px) {
+          .link-text {
+            font-size: clamp(0.65rem, 1.5vw, 0.85rem);
+          }
+        }
+
         .main {
           flex: 1;
           display: flex;
@@ -142,6 +178,7 @@ const UserDash = () => {
           color: white;
           box-shadow: 0 4px 8px rgba(0,0,0,0.1);
           border-radius: 0 0 12px 12px;
+          flex-wrap: wrap;
         }
 
         .greeting {
@@ -158,7 +195,12 @@ const UserDash = () => {
           flex: 1;
         }
 
-        /* Hover effect for links */
+        .nav-links a {
+          font-weight: 500;
+          text-decoration: none;
+          color: white;
+        }
+
         .nav-links a:hover {
           text-decoration: underline;
         }
@@ -180,15 +222,13 @@ const UserDash = () => {
           }
 
           .nav-links {
-            display: flex;
-            width: 100%;
-            justify-content: space-around;
-            padding: 0;
+            flex-wrap: wrap;
+            justify-content: center;
           }
 
           .nav-links li {
             margin: 5px;
-            padding: 5px 10px;
+            padding: 5px 8px;
           }
 
           .main {
