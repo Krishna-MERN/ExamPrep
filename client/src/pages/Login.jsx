@@ -8,6 +8,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false); // loader state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,6 +17,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // start loader
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/examinee/login`,
@@ -34,6 +36,8 @@ const Login = () => {
     } catch (error) {
       console.error("Login error:", error);
       alert("An error occurred during login. Please try again.");
+    } finally {
+      setLoading(false); // stop loader
     }
   };
 
@@ -137,6 +141,14 @@ const Login = () => {
       fontSize: "13px",
       textAlign: "center",
     },
+    loader: {
+      textAlign: "center",
+      marginTop: "8px",
+      fontSize: "14px",
+      color: "#7827c0ff",
+      fontWeight: "500",
+      animation: "blink 1.5s infinite",
+    },
   };
 
   return (
@@ -191,9 +203,15 @@ const Login = () => {
               style={styles.input}
             />
 
-            <button type="submit" style={styles.submitBtn}>
-              Login
+            <button
+              type="submit"
+              style={styles.submitBtn}
+              disabled={loading} // disable while loading
+            >
+              {loading ? "Logging in..." : "Login"}
             </button>
+
+            {loading && <p style={styles.loader}>Please wait...</p>}
 
             <div style={styles.checkbox}>
               Don’t have an account? <Link to="/register">Register here</Link>.
@@ -202,7 +220,7 @@ const Login = () => {
         </div>
       </div>
 
-      {/* Media Query */}
+      {/* Media Query + Loader Animation */}
       <style>
         {`
           .responsive-login {
@@ -219,6 +237,9 @@ const Login = () => {
             .responsive-login img {
               max-width: 200px !important;
             }
+          }
+          @keyframes blink {
+            50% { opacity: 0.5; }
           }
         `}
       </style>

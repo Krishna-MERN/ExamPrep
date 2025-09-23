@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
+
 const Result = () => {
   const [data, setData] = useState([]);
   const userId = localStorage.getItem("userId");
@@ -60,6 +61,7 @@ const Result = () => {
         </head>
         <body>
           <div class="card">
+              
             <h2>ExamPrep - Result</h2>
             <table>
               <tr><th>Exam Name</th><td>${item.examId?.title}</td></tr>

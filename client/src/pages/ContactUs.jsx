@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./styles/ContactUs.css"; // external css
 
-
 const ContactUs = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -10,6 +9,7 @@ const ContactUs = () => {
   });
 
   const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false); // loader state
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,6 +17,8 @@ const ContactUs = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // start loader
+    setStatus("");
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contact`, {
@@ -27,13 +29,15 @@ const ContactUs = () => {
 
       const data = await response.json();
       if (response.ok) {
-        setStatus("Message sent successfully!");
+        setStatus("Message sent successfully! \n We will reach you soon...");
         setFormData({ name: "", email: "", message: "" });
       } else {
         setStatus(data.message || "Something went wrong.");
       }
     } catch (error) {
       setStatus("Server error, please try again later.");
+    } finally {
+      setLoading(false); // stop loader
     }
   };
 
@@ -78,7 +82,9 @@ const ContactUs = () => {
           required
         />
 
-        <button type="submit">Send</button>
+        <button type="submit" disabled={loading}>
+          {loading ? <span className="loading-text">Please wait...</span> : "Send"}
+        </button>
       </form>
       {status && <p className="status">{status}</p>}
     </div>

@@ -152,7 +152,7 @@ const Examinee = () => {
                     <th>Name</th>
                     <th>Email</th>
                     <th>Number</th>
-                    <th>Address</th>
+                    {/* <th>Address</th> */}
                     <th>College</th>
                     <th>Qualification</th>
                     <th>Action</th>
@@ -166,7 +166,7 @@ const Examinee = () => {
                         <td>{item.name}</td>
                         <td>{item.email}</td>
                         <td>{item.number}</td>
-                        <td>{item.address}</td>
+                        {/* <td>{item.address}</td> */}
                         <td>{item.college}</td>
                         <td>{item.qualification}</td>
                         <td>

@@ -70,3 +70,29 @@ button:hover {
   margin-top: 15px;
   font-weight: bold;
 }
+
+
+
+/* loader  */
+/* Loader inside button */
+/* Animated "Please wait..." text */
+.loading-text {
+  display: inline-block;
+  font-weight: bold;
+  color: #3498db;
+  letter-spacing: 1px;
+  animation: blink 1.2s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+/* Disabled button style */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+

@@ -100,7 +100,7 @@ const UserDash = () => {
         /* Sidebar */
         .sidebar {
           width: 220px;
-          background: linear-gradient(180deg,  #4a3365ff, #ac66e9ff, #3c2e58ff);
+          background: linear-gradient(180deg,  #4a3365ff, #3c2e58ff);
           color: white;
           padding: 20px;
           display: flex;

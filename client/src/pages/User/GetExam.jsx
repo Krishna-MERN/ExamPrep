@@ -14,6 +14,7 @@ const GetExam = () => {
   const [submitted, setSubmitted] = useState(false);
   const [result, setResult] = useState(null);
   const [testStarted, setTestStarted] = useState(false);
+  const [loading, setLoading] = useState(false); // ✅ loader state
   const email = localStorage.getItem('userEmail');
 
   useEffect(() => {
@@ -60,7 +61,8 @@ const GetExam = () => {
   };
 
   const handleSubmit = async () => {
-    if (submitted) return;
+    if (submitted || loading) return;
+    setLoading(true); // ✅ start loader
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/exams/submit-exam`, {
         examId,
@@ -74,6 +76,8 @@ const GetExam = () => {
     } catch (err) {
       console.error('Error submitting exam:', err);
       setError(err.response?.data?.error || 'Failed to submit exam');
+    } finally {
+      setLoading(false); // ✅ stop loader
     }
   };
 
@@ -161,8 +165,8 @@ const GetExam = () => {
               </div>
             ))}
             <div className="text-center">
-              <button type="submit" className="btn btn-lg btn-primary px-5" disabled={submitted}>
-                🚀 Submit Exam
+              <button type="submit" className="btn btn-lg btn-primary px-5" disabled={submitted || loading}>
+                {loading ? "⏳ Please wait..." : "🚀 Submit Exam"}
               </button>
             </div>
           </form>

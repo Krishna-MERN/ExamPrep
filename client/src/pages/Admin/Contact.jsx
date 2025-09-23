@@ -6,6 +6,7 @@ const Contact = () => {
   const [messages, setMessages] = useState([]);
   const [replyInputs, setReplyInputs] = useState({});
 
+  // Fetch all messages
   const fetchAll = async () => {
     try {
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/message/all`);
@@ -14,35 +15,40 @@ const Contact = () => {
       console.error('Error fetching messages for admin:', err);
     }
   };
-  
-  useEffect(() => { fetchAll(); }, []);
 
+  useEffect(() => {
+    fetchAll();
+  }, []);
+
+  // Update reply input
   const handleReplyChange = (id, value) => {
-    setReplyInputs((prev) => ({ ...prev, [id]: value }));
+    setReplyInputs(prev => ({ ...prev, [id]: value }));
   };
 
+  // Send new reply
   const sendReply = async (id) => {
     const answer = (replyInputs[id] || '').trim();
     if (!answer) return alert('Please type a reply.');
     try {
       await axios.put(`${import.meta.env.VITE_API_URL}/api/message/reply/${id}`, {
         answer,
-        role: 'admin'
+        role: 'admin',
       });
-      setReplyInputs((prev) => ({ ...prev, [id]: '' }));
+      setReplyInputs(prev => ({ ...prev, [id]: '' }));
       fetchAll();
     } catch (err) {
       console.error('Error sending reply:', err);
     }
   };
 
+  // Edit existing reply
   const editReply = async (id, currentReply) => {
     const newReply = prompt('Edit reply:', currentReply || '');
     if (newReply === null) return;
     try {
       await axios.put(`${import.meta.env.VITE_API_URL}/api/message/reply/${id}`, {
         answer: newReply,
-        role: 'admin'
+        role: 'admin',
       });
       fetchAll();
     } catch (err) {
@@ -50,11 +56,12 @@ const Contact = () => {
     }
   };
 
+  // Delete reply
   const deleteByAdmin = async (id) => {
-    if (!window.confirm('Delete this reply?')) return;
+    if (!window.confirm('Are you sure you want to delete this reply?')) return;
     try {
       await axios.put(`${import.meta.env.VITE_API_URL}/api/message/delete/${id}`, {
-        role: 'admin'
+        role: 'admin',
       });
       fetchAll();
     } catch (err) {
@@ -66,7 +73,7 @@ const Contact = () => {
     <div className="container p-3">
       <h2>Admin - User Messages</h2>
       <table className="table table-bordered text-center">
-        <thead className='thead-light-purple'>
+        <thead className="thead-light-purple">
           <tr>
             <th>S.No.</th>
             <th>Examinee</th>
@@ -99,9 +106,9 @@ const Contact = () => {
                     className="form-control mb-1"
                   />
                   <div className="d-flex gap-1">
-                    <button className="btn btn-sm btn-secondary" onClick={() => sendReply(msg._id)}>Send Reply</button>
-                    <button className=" btn-sm btn-edit" onClick={() => editReply(msg._id, msg.answer)}>Edit Reply</button>
-                    <button className=" btn-sm btn-delete" onClick={() => deleteByAdmin(msg._id)}>Delete</button>
+                    <button className="btn btn-sm btn-secondary" onClick={() => sendReply(msg._id)}>Send</button>
+                    <button className="btn btn-sm btn-edit" onClick={() => editReply(msg._id, msg.answer)}>Edit</button>
+                    <button className="btn btn-sm btn-delete" onClick={() => deleteByAdmin(msg._id)}>Delete</button>
                   </div>
                 </td>
               </tr>

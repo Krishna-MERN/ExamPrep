@@ -17,6 +17,7 @@ const Registration = () => {
 
   const [sessions, setSessions] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false); // loader state
 
   useEffect(() => {
     const handlefetch = async () => {
@@ -52,7 +53,7 @@ const Registration = () => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    console.log("Submitting form data:", formData); // debug payload
+    setLoading(true); // start loader
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/api/examinee`, formData);
       alert("You have Registered Successfully. Check your email for confirmation.");
@@ -69,6 +70,8 @@ const Registration = () => {
     } catch (error) {
       console.error("Submission error:", error.response?.data || error);
       setErrorMessage(error.response?.data?.message || "Failed to register. Check your input.");
+    } finally {
+      setLoading(false); // stop loader
     }
   };
 
@@ -166,10 +169,19 @@ const Registration = () => {
       cursor: "pointer",
       marginTop: "10px",
     },
+    submitBtnDisabled: {
+      opacity: 0.6,
+      cursor: "not-allowed",
+    },
     errorText: {
       color: "red",
       marginBottom: "10px",
       textAlign: "center",
+    },
+    loadingText: {
+      fontWeight: "bold",
+      color: "#fff",
+      animation: "blink 1.2s infinite",
     },
   };
 
@@ -251,7 +263,7 @@ const Registration = () => {
               <input
                 type="password"
                 name="password"
-                placeholder="Password"
+                placeholder="Create Password"
                 value={formData.password}
                 onChange={handleChange}
                 required
@@ -261,7 +273,7 @@ const Registration = () => {
 
             <textarea
               name="address"
-              placeholder="Address"
+              placeholder="Address  (Block , District Only)"
               rows="3"
               value={formData.address}
               onChange={handleChange}
@@ -282,7 +294,7 @@ const Registration = () => {
               <input
                 type="text"
                 name="qualification"
-                placeholder="Qualification"
+                placeholder="Qualification Eg. BA,MA,BSc,B.Tech etc)"
                 value={formData.qualification}
                 onChange={handleChange}
                 required
@@ -290,8 +302,15 @@ const Registration = () => {
               />
             </div>
 
-            <button type="submit" style={styles.submitBtn}>
-              Register Here
+            <button
+              type="submit"
+              style={{ 
+                ...styles.submitBtn, 
+                ...(loading ? styles.submitBtnDisabled : {}) 
+              }}
+              disabled={loading}
+            >
+              {loading ? <span style={styles.loadingText}>Please wait...</span> : "Register Here"}
             </button>
 
             <div style={{ marginTop: "10px", textAlign: "center" }}>
@@ -301,7 +320,7 @@ const Registration = () => {
         </div>
       </div>
 
-      {/* Media Query */}
+      {/* Media Query + animation for blinking text */}
       <style>
         {`
           .responsive-card {
@@ -314,6 +333,11 @@ const Registration = () => {
             .responsive-card > div {
               width: 100% !important;
             }
+          }
+          @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
           }
         `}
       </style>
