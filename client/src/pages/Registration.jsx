@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import loginImage from "../assets/images/login1.png";
 import { Link } from "react-router";
 
 const Registration = () => {
@@ -159,7 +160,13 @@ const Registration = () => {
       <div style={styles.card} className="responsive-card">
         {/* Left Panel */}
         <div style={styles.leftPanel}>
+            <img
+            src={loginImage}
+            alt="Login Illustration"
+            style={{ width: "70%", maxWidth: "320px", marginBottom: "15px" }}
+          />
           <div style={{ fontSize: "28px", fontWeight: "700", marginBottom: "15px" }}>
+           
             Welcome to ExamPrep
           </div>
           <div style={{ fontSize: "15px", opacity: 0.9, maxWidth: "250px" }}>

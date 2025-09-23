@@ -1,87 +1,213 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link, Outlet } from 'react-router';
 
 const UserDash = () => {
-    const [collapsed, setCollapsed] = useState(false);
-    const [examsData, setExamsData] = useState([]);
+  const role = localStorage.getItem('userRole');
+  const email = role === 'user' ? localStorage.getItem('userEmail') : (window.location.href = '/');
 
-    const role = localStorage.getItem('userRole')
-    if(role=="user"){
-        var email = localStorage.getItem('userEmail')
-    }
-    else{
-        window.location.href='/'
-    }
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good Morning';
+    if (hour < 18) return 'Good Afternoon';
+    return 'Good Evening';
+  };
 
-    const getGreeting = () => {
-        const hour = new Date().getHours();
-        if (hour < 12) return 'Good Morning';
-        if (hour < 18) return 'Good Afternoon';
-        return 'Good Evening';
-    };
-
-
-    return (
-        <div className={`dashboard-container ${collapsed ? 'collapsed' : ''}`}>
-            {/* Sidebar */}
-            <div className="sidebar bg-dark text-white">
-               <div className="sidebar-header p-2 border-b-2 " style={{borderBottom:'2px solid #bf9debff'}}>
-          <Link className='nav-links text-light fs-4 text-decoration-none' to='/userdash'>Welcome</Link> <i className="fa-solid fa-user-tie ms-2"></i>
+  return (
+    <div className="dashboard-container">
+      {/* Sidebar / Navbar */}
+      <div className="sidebar">
+        <div className="sidebar-header">
+          <Link className="nav-links text-light fs-5 text-decoration-none" to="/userdash">
+            Welcome
+          </Link>
         </div>
-                <ul className="nav-links list-unstyled p-2">
-                    <li className="mb-2">
-                        <i className="fa-solid fa-user me-2"></i>
-                        <Link to="/userdash/profile" className="text-white text-decoration-none">Profile</Link>
-                    </li>
-                    
-                    <li className="mb-2">
-                        <i className="fa-solid fa-pen-to-square me-2"></i>
-                        <Link to="/userdash/myexam" className="text-white text-decoration-none">My Exams</Link>
-                    </li>
-                    <li className="mb-2">
-                        <i className="fa-solid fa-trophy me-2"></i>
-                        <Link to="/userdash/results" className="text-white text-decoration-none">Result</Link>
-                    </li>
-                    <li className="mb-2">
-                        <i className="fa-solid fa-key me-2"></i>
-                        <Link to="/userdash/chanpass" className="text-white text-decoration-none">Change Password</Link>
-                    </li>
-                    <li><i class="fa-solid fa-message"></i>
-                    <Link to="/userdash/contact1" className="text-white text-decoration-none">Contact Us</Link>
-                    </li>
-                 <li><i class="fa-solid fa-arrow-right-from-bracket"></i> <Link className='text-decoration-none text-white' onClick={() => {
-                             localStorage.removeItem('userRole')
-                             localStorage.removeItem('userEmail')
-                             localStorage.removeItem('userId')
-                             window.location.href = '/'
-                           }}>Log Out</Link></li>
-                </ul>
-            </div>
+        <ul className="nav-links list-unstyled">
+          <li>
+            <i className="fa-solid fa-user me-2"></i>
+            <Link to="/userdash/profile" className="text-white text-decoration-none">Profile</Link>
+          </li>
+          <li>
+            <i className="fa-solid fa-pen-to-square me-2"></i>
+            <Link to="/userdash/myexam" className="text-white text-decoration-none">My Exams</Link>
+          </li>
+          <li>
+            <i className="fa-solid fa-trophy me-2"></i>
+            <Link to="/userdash/results" className="text-white text-decoration-none">Result</Link>
+          </li>
+          <li>
+            <i className="fa-solid fa-key me-2"></i>
+            <Link to="/userdash/chanpass" className="text-white text-decoration-none">Change Password</Link>
+          </li>
+          <li>
+            <i className="fa-solid fa-message me-2"></i>
+            <Link to="/userdash/contact1" className="text-white text-decoration-none">Contact Us</Link>
+          </li>
+          <li>
+            <i className="fa-solid fa-arrow-right-from-bracket me-2"></i>
+            <Link
+              className="text-white text-decoration-none"
+              onClick={() => {
+                localStorage.clear();
+                window.location.href = '/';
+              }}
+            >
+              Log Out
+            </Link>
+          </li>
+        </ul>
+      </div>
 
-            {/* Main Content */}
-            <div className="main">
-                {/* Topbar */}
-                <div className="topbar d-flex justify-content-between align-items-center p-3 border-bottom border-success bg-dark">
-                    {/* Greeting*/}
-                    <h4 className="text-white mb-0">
-                        {getGreeting()} <i className="fa-solid fa-user-tie ms-2"></i>
-                    </h4>
-                    <h4 className="text-white mb-0">
-                        Examinee Dashboard
-                    </h4>
-                </div>
-
-
-                {/* Dashboard Content */}
-                   <div className="content p-4">
-                    <Outlet />
-
-              
-                </div>
-                 
-            </div>
+      {/* Main Content */}
+      <div className="main">
+        <div className="topbar">
+          <div className="greeting">
+            {getGreeting()}, <b>{email}</b>
+          </div>
+          <h4 className="dashboard-title">Examinee Dashboard</h4>
         </div>
-    );
+        <div className="content">
+          <Outlet />
+        </div>
+      </div>
+
+      {/* Styles */}
+      <style>{`
+        body, html {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        .dashboard-container {
+          display: flex;
+          min-height: 100vh;
+          font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* Sidebar */
+        .sidebar {
+          width: 250px;
+          background: linear-gradient(180deg,  #6A0DAD, #3c2e58ff);
+          color: white;
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
+          justify-content: start;
+          box-shadow: 4px 0 12px rgba(0,0,0,0.2);
+          transition: all 0.3s ease;
+        }
+
+        .sidebar-header {
+          font-size: 1.2rem;
+          margin-bottom: 1.5rem;
+          font-weight: 600;
+          border-bottom: 2px solid rgba(255,255,255,0.3);
+          padding-bottom: 0.5rem;
+        }
+
+        .nav-links li {
+          margin: 15px 0;
+          padding: 8px 12px;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+        }
+
+        .nav-links li:hover {
+          background-color: rgba(255,255,255,0.1);
+          cursor: pointer;
+        }
+
+        .nav-links li i {
+          width: 20px;
+        }
+
+        .nav-links a {
+          font-weight: 500;
+        }
+
+        /* Main content */
+        .main {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          background: #f4f2f8;
+        }
+
+        .topbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 15px 25px;
+          background: linear-gradient(90deg, #390b4dff, #7a17d1ff);
+          color: white;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+          border-radius: 0 0 12px 12px;
+        }
+
+        .greeting {
+          font-size: 1.1rem;
+        }
+
+        .dashboard-title {
+          font-size: 1.4rem;
+          font-weight: 600;
+        }
+
+        .content {
+          padding: 25px;
+          flex: 1;
+        }
+
+        /* Hover effect for links */
+        .nav-links a:hover {
+          text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+          .dashboard-container {
+            flex-direction: column;
+          }
+
+          .sidebar {
+            width: 100%;
+            flex-direction: row;
+            justify-content: space-around;
+            padding: 10px 0;
+          }
+
+          .sidebar-header {
+            display: none;
+          }
+
+          .nav-links {
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+            padding: 0;
+          }
+
+          .nav-links li {
+            margin: 5px;
+            padding: 5px 10px;
+          }
+
+          .main {
+            width: 100%;
+          }
+
+          .topbar {
+            flex-direction: column;
+            text-align: center;
+            padding: 10px;
+          }
+
+          .content {
+            padding: 15px;
+          }
+        }
+      `}</style>
+    </div>
+  );
 };
 
 export default UserDash;
