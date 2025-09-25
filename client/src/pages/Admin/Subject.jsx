@@ -24,6 +24,13 @@ const Subject = () => {
     // console.log(form);
 
   }
+ // fetch data api
+  const handlefetch = async () => {
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/subject`)
+    // console.log(res.data);
+    setData(res.data.data);
+  }
+
   // handleSubmit
   const [id, setId] = useState({
     id:'',
@@ -41,6 +48,7 @@ const Subject = () => {
       }
       else{
         const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/subject`, form)
+        console.log("POST response:", res.data);
         if (res) {
           alert('Subject Added Successfully')
           handlefetch();
@@ -51,12 +59,7 @@ const Subject = () => {
       alert("Sorry try again later")
     }
   }
-  // fetch data api
-  const handlefetch = async () => {
-    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/subject`)
-    // console.log(res.data);
-    setData(res.data.data);
-  }
+ 
   useEffect(() => {
     handlefetch();
   }, [])

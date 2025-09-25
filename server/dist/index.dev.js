@@ -10,14 +10,14 @@ require('dotenv').config(); // Load .env
 
 
 var app = express();
-app.use(cors());
+app.use(cors({
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 app.use(express.json()); // Connect to MongoDB
 
 var URL = process.env.MONGO_URI;
-mongoose.connect(URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(function () {
+mongoose.connect(URL).then(function () {
   console.log('✅ Successfully connected to MongoDB Atlas');
 })["catch"](function (err) {
   console.error('❌ DB Connection Error:', err);

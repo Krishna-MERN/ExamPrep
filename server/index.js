@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 require('dotenv').config();  // Load .env
 
 const app = express();
-app.use(cors());
+app.use(cors({methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true}));
 app.use(express.json());
 
 // Connect to MongoDB

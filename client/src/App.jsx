@@ -26,8 +26,8 @@ import AdminHome from "./pages/Admin/AdminHome";
 import Component from "./pages/Component";
 import UserHome from "./pages/User/UserHome";
 import Hero from "./pages/Hero";
-import Navbar from "./pages/Navbar";
-import Footer from "./pages/Footer";
+// import Navbar from "./pages/Navbar";
+// import Footer from "./pages/Footer";
 import ContactUs from "./pages/ContactUs";
 import ViewMessages from "./pages/Admin/ViewMessages";
 
